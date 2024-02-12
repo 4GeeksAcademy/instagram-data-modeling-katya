@@ -22,7 +22,7 @@ class Post(Base):
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user.id'))
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
     user = relationship(User)
 
 class Media(Base):
@@ -30,13 +30,13 @@ class Media(Base):
     id = Column(Integer, primary_key=True)
     type = Column(Enum())
     url = Column(String(100))
-    post_id = Column(Integer, ForeignKey('post.id'), nullable=False)
+    post_id = Column(Integer, ForeignKey('post.id'))
     post = relationship(Post)
 
 class Comment(Base):
     __tablename__ = 'comment'
     id = Column(Integer, primary_key=True)
-    comment_text = Column(String(500))
+    comment_text = Column(String(500), nullable=False)
     author_id = Column(Integer, ForeignKey('user.id'))
     post_id = Column(Integer, ForeignKey('post.id'))
     user = relationship(User)
@@ -44,7 +44,8 @@ class Comment(Base):
 
 class Follower(Base):
     __tablename__ = 'follower'
-    user_from_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    user_from_id = Column(Integer, ForeignKey('user.id'))
     user_to_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
